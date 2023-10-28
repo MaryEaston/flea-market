@@ -96,14 +96,13 @@ fn view(model: &Model) -> Vec<Node<Msg>> {
     let id = model.id;
     let formula = prices()[id as usize].formula.clone();
 
-    let sec: i64 = Local::now().timestamp() - 1667091600;
+    let sec: i64 = Local::now().timestamp() - 1698505200;
     let t: f32 = (sec as f32) / 60.0 / 420.0;
-    let t = 0.5;
+    // let t = 0.512345;
     let price = (prices()[id as usize].calculate)(t);
     vec![
         div!(attrs!(At::Id => "title"), p!("大岡山最終処分場。"), hr!()),
         div!(attrs!(At::Id => "menu")),
-        p!(attrs!(At::Id => "id"), id),
         div!(
             attrs!(At::Id => "formula"),
             p!(C!("text"), "価格関数"),
@@ -113,23 +112,26 @@ fn view(model: &Model) -> Vec<Node<Msg>> {
             attrs!(At::Id => "now_time"),
             p!(C!("text"), "現在時刻"),
             p!(C!("time"), Local::now().format("%H:%M:%S").to_string()),
-            p!(C!("time-t"), format! {"\\(t = {}\\)",t}),
+            p!(C!("time-t"), format! {"\\(t = {:.3}\\)",t}),
             p!(C!("complain"), "10:00~17:00 が 0~1 に対応"),
         ),
         div!(
             attrs!(At::Id => "now_price"),
             p!(C!("text"), "現在の価格"),
+            p!(C!("complain"), "釣り銭のため、価格は1の位を四捨五入"),
             p!(
                 C!("price"),
                 span!(attrs!(At::Id => "value"), format!("{:.1}", price)),
                 span!(attrs!(At::Id => "yen"), "円"),
-            )
+            ),
         ),
         div!(
             attrs!(At::Id => "graph"),
             p!(C!("text"), "過去の価格変動"),
             canvas!(attrs!(At::Id => "canvas",At::Width => 1400,At::Height => 800),)
         ),
+        p!(attrs!(At::Id => "_id"), id),
+        p!(attrs!(At::Id => "_time"), format! {"{:.3}",t}),
     ]
 }
 
@@ -165,8 +167,10 @@ pub struct Point {
 impl Chart {
     /// Draw provided power function on the canvas element using it's id.
     /// Return `Chart` struct suitable for coordinate conversion.
-    pub fn power(canvas_id: &str, id: u32) -> Result<Chart, JsValue> {
-        let map_coord = draw(canvas_id, id).map_err(|err| err.to_string())?;
+    pub fn power(canvas_id: &str, id: u32, time: &str) -> Result<Chart, JsValue> {
+        // time.parse::<f32>().unwrap()
+        let map_coord =
+            draw(canvas_id, id, time.parse::<f32>().unwrap()).map_err(|err| err.to_string())?;
         Ok(Chart {
             convert: Box::new(move |coord| map_coord(coord).map(|(x, y)| (x.into(), y.into()))),
         })
@@ -183,7 +187,11 @@ use plotters::prelude::*;
 use plotters_canvas::CanvasBackend;
 
 /// Draw power function f(x) = x^power.
-fn draw(canvas_id: &str, id: u32) -> DrawResult<impl Fn((i32, i32)) -> Option<(f32, f32)>> {
+fn draw(
+    canvas_id: &str,
+    id: u32,
+    time: f32,
+) -> DrawResult<impl Fn((i32, i32)) -> Option<(f32, f32)>> {
     let backend = CanvasBackend::new(canvas_id).expect("cannot find canvas");
     let root = backend.into_drawing_area();
     let x_font: FontDesc = ("sans-serif", 60.0).into();
@@ -206,9 +214,13 @@ fn draw(canvas_id: &str, id: u32) -> DrawResult<impl Fn((i32, i32)) -> Option<(f
         .draw()?;
 
     chart.draw_series(LineSeries::new(
-        (0..=500)
-            .map(|t| t as f32 / 500.0)
-            .map(|t| (t, (prices()[id as usize].calculate)(t))),
+        (0..=500).map(|t| t as f32 / 500.0).map(|t| {
+            let mut t = t;
+            if t > time {
+                t = time
+            }
+            (t, (prices()[id as usize].calculate)(t))
+        }),
         &RED,
     ))?;
 

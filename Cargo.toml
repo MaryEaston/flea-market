@@ -22,6 +22,7 @@ plotters = "*"
 plotters-canvas = "*"
 web-sys = "*"
 chrono = "*"
+gloo-console = "*"
 
 [profile.release]
 lto = true
