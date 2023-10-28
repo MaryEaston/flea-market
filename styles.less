@@ -36,7 +36,7 @@ body {
 #formula {
   grid-area: formula;
 
-  box-shadow: 0px 0px 10px 6px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 0px 1vw 0.6vw rgba(0, 0, 0, 0.2);
   padding: 5vw;
   border-radius: 3vw;
 
@@ -49,23 +49,30 @@ body {
 #now_time {
   grid-area: now_time;
 
-  box-shadow: 0px 0px 10px 6px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 0px 1vw 0.6vw rgba(0, 0, 0, 0.2);
   padding: 5vw;
   border-radius: 3vw;
+  .time {
+    font-size: 5vw;
+  }
+  .time-t {
+    font-size: 5vw;
+  }
+  .complain {
+    font-size: 2vw;
+  }
 }
 
 #now_price {
   grid-area: now_price;
 
-  box-shadow: 0px 0px 10px 6px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 0px 1vw 0.6vw rgba(0, 0, 0, 0.2);
   padding: 5vw;
   border-radius: 3vw;
 
   .price {
-    margin-top: -5vw;
-
     #value {
-      font-size: 15vw;
+      font-size: 10vw;
     }
 
     #yen {
@@ -77,7 +84,7 @@ body {
 #graph {
   grid-area: graph;
 
-  box-shadow: 0px 0px 10px 6px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 0px 1vw 0.6vw rgba(0, 0, 0, 0.2);
   padding: 5vw;
   border-radius: 3vw;
 }
@@ -88,4 +95,8 @@ body {
 
 #reload {
   font-size: 3vw;
+}
+
+#id {
+  display: none;
 }

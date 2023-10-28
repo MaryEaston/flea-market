@@ -3,81 +3,136 @@
 // but some rules are too "annoying" or are not applicable for your case.)
 #![allow(clippy::wildcard_imports)]
 
+use std::f32::consts::{E, PI};
+
+use chrono::Local;
 use seed::{prelude::*, *};
 
-// ------ ------
-//     Init
-// ------ ------
-
-// `init` describes what should happen when your app started.
-fn init(_: Url, _: &mut impl Orders<Msg>) -> Model {
-    Model { counter: 0 }
+pub struct Price {
+    pub max: f32,
+    pub calculate: fn(f32) -> f32,
+    pub formula: String,
 }
 
-// ------ ------
-//     Model
-// ------ ------
-
-// `Model` describes our app state.
-struct Model {
-    counter: i32,
+fn prices() -> Vec<Price> {
+    vec![
+        Price {
+            calculate: |_| 0.0,
+            formula: "\\(y=0\\)".to_string(),
+            max: 1.0,
+        },
+        Price {
+            // 1
+            calculate: |t| 50.0 * (t * (20.0 * PI * t).sin() + 1.0),
+            formula: "\\(x = 50(t \\sin20\\pi t + 1)\\)".to_string(),
+            max: 100.0,
+        },
+        Price {
+            // 2
+            calculate: |t| 250.0 * (t * (20.0 * PI * t).sin() + 1.0),
+            formula: "\\(x = 250(t \\sin20\\pi t + 1)\\)".to_string(),
+            max: 500.0,
+        },
+        Price {
+            // 3
+            calculate: |t| 200.0 * t.sqrt() + 300.0,
+            formula: "\\(x = 200\\sqrt{t} + 300\\)".to_string(),
+            max: 500.0,
+        },
+        Price {
+            // 3'
+            calculate: |t| 200.0 * (-t + 1.0).sqrt() + 300.0,
+            formula: "\\(x = 200\\sqrt{-t+1} + 300\\)".to_string(),
+            max: 500.0,
+        },
+        Price {
+            // 4
+            calculate: |t| 2000.0 * (t - 1.0 / 2.0).powf(3.0) + 750.0,
+            formula: "\\(x = 2000(t-\\frac{1}{2})^3 + 750\\)".to_string(),
+            max: 1000.0,
+        },
+        Price {
+            // 5
+            calculate: |t| 50.0 * (10.0 * PI * t).sin() + 400.0 * t + 800.0,
+            formula: "\\(x = 50\\sin{10\\pi t} + 400 + 800\\)".to_string(),
+            max: 1200.0,
+        },
+        Price {
+            // 6
+            calculate: |t| 1400.0 * (-t + 3.0).ln(),
+            formula: "\\(x = 1400\\ln{(-t + 3)}\\)".to_string(),
+            max: 1600.0,
+        },
+        Price {
+            calculate: |t| 100.0 * (10.0 * PI * t).cos() - 1000.0 * t + 3000.0,
+            formula: "\\(x = 100\\cos{(10\\pi t) - 1000t + 3000}\\)".to_string(),
+            max: 3200.0,
+        },
+        Price {
+            calculate: |t| 500.0 * (10.0 * PI * t).sin() + 500.0 * (5.0 * PI * t).cos() + 4000.0,
+            formula: "\\(x = 500\\sin{(10\\pi t)} + 500\\cos{(5\\pi t)} + 4000\\)".to_string(),
+            max: 5000.0,
+        },
+    ]
 }
 
-// ------ ------
-//    Update
-// ------ ------
-
-// (Remove the line below once any of your `Msg` variants doesn't implement `Copy`.)
-#[derive(Copy, Clone)]
-// `Msg` describes the different events you can modify state with.
-enum Msg {
-    Increment,
-}
-
-// `update` describes how to handle each `Msg`.
-fn update(msg: Msg, model: &mut Model, _: &mut impl Orders<Msg>) {
-    match msg {
-        Msg::Increment => model.counter += 1,
+fn init(url: Url, _: &mut impl Orders<Msg>) -> Model {
+    Model {
+        id: url.search().get("id").unwrap()[0].parse().unwrap(),
     }
 }
+struct Model {
+    id: i32,
+}
 
-// ------ ------
-//     View
-// ------ ------
+#[derive(Copy, Clone)]
+enum Msg {}
 
-// `view` describes what to display.
+fn update(msg: Msg, model: &mut Model, _: &mut impl Orders<Msg>) {
+    match msg {}
+}
+
 fn view(model: &Model) -> Vec<Node<Msg>> {
+    let id = model.id;
+    let formula = prices()[id as usize].formula.clone();
+
+    let sec: i64 = Local::now().timestamp() - 1667091600;
+    let t: f32 = (sec as f32) / 60.0 / 420.0;
+    let t = 0.5;
+    let price = (prices()[id as usize].calculate)(t);
     vec![
         div!(attrs!(At::Id => "title"), p!("大岡山最終処分場。"), hr!()),
+        div!(attrs!(At::Id => "menu")),
+        p!(attrs!(At::Id => "id"), id),
         div!(
             attrs!(At::Id => "formula"),
             p!(C!("text"), "価格関数"),
-            p!(C!("eq"), "\\(y= \\left\\lceil 3\\sin \\left( 10\\pi t \\right)+1 \\right\\rceil \\times 10\\)")
+            p!(C!("eq"), formula)
         ),
         div!(
             attrs!(At::Id => "now_time"),
             p!(C!("text"), "現在時刻"),
-            p!(C!("text"), "18:58:13"),
-            p!(C!("text"), "\\(t = 1242.42\\) [\\(\\times\\) 420 分]"),
+            p!(C!("time"), Local::now().format("%H:%M:%S").to_string()),
+            p!(C!("time-t"), format! {"\\(t = {}\\)",t}),
+            p!(C!("complain"), "10:00~17:00 が 0~1 に対応"),
         ),
         div!(
             attrs!(At::Id => "now_price"),
             p!(C!("text"), "現在の価格"),
             p!(
                 C!("price"),
-                span!(attrs!(At::Id => "value"), "40"),
+                span!(attrs!(At::Id => "value"), format!("{:.1}", price)),
                 span!(attrs!(At::Id => "yen"), "円"),
             )
         ),
-        div!(attrs!(At::Id => "graph"), p!(C!("text"), "過去の価格変動"),canvas!(attrs!(At::Id => "canvas",At::Width => 1400,At::Height => 800),))
+        div!(
+            attrs!(At::Id => "graph"),
+            p!(C!("text"), "過去の価格変動"),
+            canvas!(attrs!(At::Id => "canvas",At::Width => 1400,At::Height => 800),)
+        ),
     ]
 }
 
-// ------ ------
-//     Start
-// ------ ------
-
-// (This function is invoked by `init` function in `index.html`.)
 #[wasm_bindgen(start)]
 pub fn start() {
     // Mount the `app` to the element with the `id` "app".
@@ -85,11 +140,6 @@ pub fn start() {
 }
 
 // ##### ここから下はグラフ #####
-
-use wasm_bindgen::prelude::*;
-use web_sys::HtmlCanvasElement;
-
-mod func_plot;
 
 #[global_allocator]
 static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
@@ -115,8 +165,8 @@ pub struct Point {
 impl Chart {
     /// Draw provided power function on the canvas element using it's id.
     /// Return `Chart` struct suitable for coordinate conversion.
-    pub fn power(canvas_id: &str, power: i32) -> Result<Chart, JsValue> {
-        let map_coord = func_plot::draw(canvas_id, power).map_err(|err| err.to_string())?;
+    pub fn power(canvas_id: &str, id: u32) -> Result<Chart, JsValue> {
+        let map_coord = draw(canvas_id, id).map_err(|err| err.to_string())?;
         Ok(Chart {
             convert: Box::new(move |coord| map_coord(coord).map(|(x, y)| (x.into(), y.into()))),
         })
@@ -127,4 +177,41 @@ impl Chart {
     pub fn coord(&self, x: i32, y: i32) -> Option<Point> {
         (self.convert)((x, y)).map(|(x, y)| Point { x, y })
     }
+}
+
+use plotters::prelude::*;
+use plotters_canvas::CanvasBackend;
+
+/// Draw power function f(x) = x^power.
+fn draw(canvas_id: &str, id: u32) -> DrawResult<impl Fn((i32, i32)) -> Option<(f32, f32)>> {
+    let backend = CanvasBackend::new(canvas_id).expect("cannot find canvas");
+    let root = backend.into_drawing_area();
+    let x_font: FontDesc = ("sans-serif", 60.0).into();
+    let y_font: FontDesc = ("sans-serif", 60.0).into();
+
+    root.fill(&WHITE)?;
+
+    let mut chart = ChartBuilder::on(&root)
+        .margin(0u32)
+        .x_label_area_size(70u32)
+        .y_label_area_size(240u32)
+        .build_cartesian_2d(0f32..1.05f32, 0f32..prices()[id as usize].max)?;
+
+    chart
+        .configure_mesh()
+        .x_labels(3)
+        .x_label_style(x_font)
+        .y_labels(3)
+        .y_label_style(y_font)
+        .draw()?;
+
+    chart.draw_series(LineSeries::new(
+        (0..=500)
+            .map(|t| t as f32 / 500.0)
+            .map(|t| (t, (prices()[id as usize].calculate)(t))),
+        &RED,
+    ))?;
+
+    root.present()?;
+    return Ok(chart.into_coord_trans());
 }

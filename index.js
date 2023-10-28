@@ -3,6 +3,7 @@
 class Chart {}
 
 const canvas = document.getElementById("canvas");
+const id = document.getElementById("id").textContent;
 // const coord = document.getElementById("coord");
 // const plotType = document.getElementById("plot-type");
 // const pitch = document.getElementById("pitch");
@@ -30,7 +31,7 @@ function setupCanvas() {
   canvas.style.height = size / aspectRatio + "px";
   canvas.width = size;
   canvas.height = size / aspectRatio;
-  chart = Chart.power("canvas", Number(0));
+  chart = Chart.power("canvas", Number(id));
 }
 
 function loadMathJax() {

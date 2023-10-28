@@ -21,6 +21,7 @@ wee_alloc = "*"
 plotters = "*"
 plotters-canvas = "*"
 web-sys = "*"
+chrono = "*"
 
 [profile.release]
 lto = true
