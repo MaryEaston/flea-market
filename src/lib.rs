@@ -67,16 +67,19 @@ fn prices() -> Vec<Price> {
             max: 1600.0,
         },
         Price {
+            // 7
             calculate: |t| 100.0 * (10.0 * PI * t).cos() - 1000.0 * t + 3000.0,
             formula: "\\(x = 100\\cos{(10\\pi t) - 1000t + 3000}\\)".to_string(),
             max: 3200.0,
         },
         Price {
+            // 8
             calculate: |t| 500.0 * (10.0 * PI * t).sin() + 500.0 * (5.0 * PI * t).cos() + 4000.0,
             formula: "\\(x = 500\\sin{(10\\pi t)} + 500\\cos{(5\\pi t)} + 4000\\)".to_string(),
             max: 5000.0,
         },
         Price {
+            // 9
             calculate: |t| {
                 150.0
                     * ((128.0 * PI * t).sin()
@@ -93,20 +96,22 @@ fn prices() -> Vec<Price> {
             max: 7500.0,
         },
         Price {
-            calculate: |t| {1.0
-            },
-            formula: "\\(x = 150(\\sin(80\\pi t + 40\\pi t + 20\\pi t + 10\\pi t + 5\\pi t)) - 1500t + 6800\\)".to_string(),
-            max: 7500.0,
+            calculate: |t| 1500.0 * (2.0 * PI * t).sin() + 15000.0,
+            formula: "\\(x = 1500\\sin(2\\pi t) + 15000\\)".to_string(),
+            max: 18000.0,
         },
         Price {
+            // 11
             calculate: |t| {
-                let seed_int:u8= (t/60.0).round() as u8;
+                let min: f32 = t * 420.0;
+                let sec: f32 = t * 420.0 * 60.0;
+                let seed_int: u8 = ((min.round() as u64) % 256) as u8;
                 let seed: [u8; 32] = [seed_int; 32];
                 let mut rng: rand::rngs::StdRng = rand::SeedableRng::from_seed(seed);
-                rng.gen::<f32>()
+                rng.gen::<f32>() * 900.0 + 100.0
             },
-            formula: "\\(x = 150(\\sin(80\\pi t + 40\\pi t + 20\\pi t + 10\\pi t + 5\\pi t)) - 1500t + 6800\\)".to_string(),
-            max: 7500.0,
+            formula: "\\(x\\)は\\(100\\)~\\(1000\\)からランダムな値".to_string(),
+            max: 1000.0,
         },
     ]
 }
@@ -131,9 +136,9 @@ fn view(model: &Model) -> Vec<Node<Msg>> {
     let id = model.id;
     let formula = prices()[id as usize].formula.clone();
 
-    let sec: i64 = Local::now().timestamp() - 1698505200;
+    let sec: i64 = Local::now().timestamp() - 1698541200;
     let t: f32 = (sec as f32) / 60.0 / 420.0;
-    let t = 1.0;
+    // let t = 1.0;
     let price = (prices()[id as usize].calculate)(t);
     vec![
         div!(attrs!(At::Id => "title"), p!("大岡山最終処分場。"), hr!()),
@@ -237,7 +242,7 @@ fn draw(
     let mut chart = ChartBuilder::on(&root)
         .margin(0u32)
         .x_label_area_size(70u32)
-        .y_label_area_size(240u32)
+        .y_label_area_size(200u32)
         .build_cartesian_2d(0f32..1.05f32, 0f32..prices()[id as usize].max)?;
 
     chart
@@ -246,6 +251,7 @@ fn draw(
         .x_label_style(x_font)
         .y_labels(3)
         .y_label_style(y_font)
+        .y_label_formatter(&|x: &f32| format!("{}", *x as u32))
         .draw()?;
 
     chart.draw_series(LineSeries::new(
