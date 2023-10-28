@@ -304,9 +304,11 @@ name = "flea-market"
 version = "0.1.0"
 dependencies = [
  "chrono",
+ "getrandom 0.2.2",
  "gloo-console",
  "plotters",
  "plotters-canvas",
+ "rand",
  "seed",
  "wasm-bindgen-test",
  "web-sys",

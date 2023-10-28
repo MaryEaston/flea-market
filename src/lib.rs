@@ -5,6 +5,9 @@
 
 use std::f32::consts::{E, PI};
 
+use rand;
+use rand::prelude::*;
+
 use chrono::Local;
 use seed::{prelude::*, *};
 
@@ -73,6 +76,38 @@ fn prices() -> Vec<Price> {
             formula: "\\(x = 500\\sin{(10\\pi t)} + 500\\cos{(5\\pi t)} + 4000\\)".to_string(),
             max: 5000.0,
         },
+        Price {
+            calculate: |t| {
+                150.0
+                    * ((128.0 * PI * t).sin()
+                        + (64.0 * PI * t).sin()
+                        + (32.0 * PI * t).sin()
+                        + (16.0 * PI * t).sin()
+                        + (8.0 * PI * t).sin()
+                        + (4.0 * PI * t).sin()
+                        + (2.0 * PI * t).sin())
+                    - 1200.0 * t
+                    + 6800.0
+            },
+            formula: "\\(x = 150(\\sum_{k=1}^7 \\sin(2^k\\pi t)) - 1200t + 6800\\)".to_string(),
+            max: 7500.0,
+        },
+        Price {
+            calculate: |t| {1.0
+            },
+            formula: "\\(x = 150(\\sin(80\\pi t + 40\\pi t + 20\\pi t + 10\\pi t + 5\\pi t)) - 1500t + 6800\\)".to_string(),
+            max: 7500.0,
+        },
+        Price {
+            calculate: |t| {
+                let seed_int:u8= (t/60.0).round() as u8;
+                let seed: [u8; 32] = [seed_int; 32];
+                let mut rng: rand::rngs::StdRng = rand::SeedableRng::from_seed(seed);
+                rng.gen::<f32>()
+            },
+            formula: "\\(x = 150(\\sin(80\\pi t + 40\\pi t + 20\\pi t + 10\\pi t + 5\\pi t)) - 1500t + 6800\\)".to_string(),
+            max: 7500.0,
+        },
     ]
 }
 
@@ -98,7 +133,7 @@ fn view(model: &Model) -> Vec<Node<Msg>> {
 
     let sec: i64 = Local::now().timestamp() - 1698505200;
     let t: f32 = (sec as f32) / 60.0 / 420.0;
-    // let t = 0.512345;
+    let t = 1.0;
     let price = (prices()[id as usize].calculate)(t);
     vec![
         div!(attrs!(At::Id => "title"), p!("大岡山最終処分場。"), hr!()),
@@ -214,7 +249,7 @@ fn draw(
         .draw()?;
 
     chart.draw_series(LineSeries::new(
-        (0..=500).map(|t| t as f32 / 500.0).map(|t| {
+        (0..=500).map(|t| t as f32 / 420.0).map(|t| {
             let mut t = t;
             if t > time {
                 t = time

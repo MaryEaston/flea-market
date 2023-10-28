@@ -23,6 +23,8 @@ plotters-canvas = "*"
 web-sys = "*"
 chrono = "*"
 gloo-console = "*"
+rand = "*"
+getrandom = { version = "0.2", features = ["js"] }
 
 [profile.release]
 lto = true
