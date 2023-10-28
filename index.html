@@ -1,30 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="utf-8">
+  <head>
+    <meta charset="utf-8" />
     <title>フリマ価格</title>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <!-- <link rel="modulepreload" href="/pkg/package.js" as="script" type="text/javascript">
-    <link rel="preload" href="/pkg/package_bg.wasm" as="fetch" type="application/wasm" crossorigin="anonymous"> -->
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link
+      rel="modulepreload"
+      href="./pkg/package.js"
+      as="script"
+      type="text/javascript"
+    />
+    <link
+      rel="preload"
+      href="./pkg/package_bg.wasm"
+      as="fetch"
+      type="application/wasm"
+      crossorigin="anonymous"
+    />
 
     <link rel="stylesheet/less" type="text/css" href="styles.less" />
     <script src="https://cdn.jsdelivr.net/npm/less"></script>
-    <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css">
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/modern-css-reset/dist/reset.min.css"
+    />
+  </head>
 
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-
-    <!-- <link href="index.js" as="script" type="text/javascript"> -->
-</head>
-
-<body>
-    <script src="./bootstrap.js"></script>
+  <body>
     <section id="app"></section>
-    <!-- <script type="module">
-        import init from '/pkg/package.js';
-        init('/pkg/package_bg.wasm');
-    </script> -->
-</body>
 
+    <script type="module" src="./bootstrap.js"></script>
+  </body>
 </html>

@@ -48,36 +48,29 @@ fn update(msg: Msg, model: &mut Model, _: &mut impl Orders<Msg>) {
 // `view` describes what to display.
 fn view(model: &Model) -> Vec<Node<Msg>> {
     vec![
-        head_view(&model),
+        div!(attrs!(At::Id => "title"), p!("処分場"), hr!()),
         div!(
-            attrs!(At::Id => "container"),
-            div!(
-                attrs!(At::Id => "formula"),
-                p!(C!("text"), "価格関数"),
-                p!(C!("eq"), "\\(y= \\left\\lceil 3\\sin \\left( 10\\pi t \\right)+1 \\right\\rceil \\times 10\\)")
-            ),
-            div!(
-                attrs!(At::Id => "now_time"),
-                p!(C!("text"), "現在時刻"),
-                p!(C!("text"), "18:58:13"),
-                p!(C!("text"), "\\(t = 1242.42\\) [\\(\\times\\) 420 分]"),
-            ),
-            div!(
-                attrs!(At::Id => "now_price"),
-                p!(C!("text"), "現在の価格"),
-                p!(
-                    C!("price"),
-                    span!(attrs!(At::Id => "value"), "40"),
-                    span!(attrs!(At::Id => "yes"), "円"),
-                )
-            ),
-            div!(attrs!(At::Id => "graph"), p!(C!("text"), "過去の価格変動"),canvas!(attrs!(At::Id => "canvas",At::Width => 600,At::Height => 400),))
+            attrs!(At::Id => "formula"),
+            p!(C!("text"), "価格関数"),
+            p!(C!("eq"), "\\(y= \\left\\lceil 3\\sin \\left( 10\\pi t \\right)+1 \\right\\rceil \\times 10\\)")
         ),
+        div!(
+            attrs!(At::Id => "now_time"),
+            p!(C!("text"), "現在時刻"),
+            p!(C!("text"), "18:58:13"),
+            p!(C!("text"), "\\(t = 1242.42\\) [\\(\\times\\) 420 分]"),
+        ),
+        div!(
+            attrs!(At::Id => "now_price"),
+            p!(C!("text"), "現在の価格"),
+            p!(
+                C!("price"),
+                span!(attrs!(At::Id => "value"), "40"),
+                span!(attrs!(At::Id => "yes"), "円"),
+            )
+        ),
+        div!(attrs!(At::Id => "graph"), p!(C!("text"), "過去の価格変動"),canvas!(attrs!(At::Id => "canvas",At::Width => 1400,At::Height => 800),))
     ]
-}
-
-fn head_view(_model: &Model) -> Node<Msg> {
-    div!(attrs!(At::Id => "title"), p!("処分場"), hr!())
 }
 
 // ------ ------

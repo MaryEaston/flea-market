@@ -1,82 +1,91 @@
 body {
-    text-align: center;
+  text-align: center;
 }
 
 #title {
-    font-size: 10vw;
+  font-size: 10vw;
 
-    hr {
-        border: none;
-        border-bottom: 1px solid #333;
-        width: 80%;
-        margin: auto;
-    }
+  hr {
+    border: none;
+    border-bottom: 1px solid #333;
+    width: 80%;
+    margin: auto;
+  }
 }
 
 .text {
-    font-size: 3vw;
+  font-size: 3vw;
 }
 
-#container{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-areas:
-        "formula  formula"
-        "now_time now_price"
-        "graph    graph";
-    gap: 5vw;
-    padding:5vw;
+#app {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas:
+    "title    title"
+    "formula  formula"
+    "now_time now_price"
+    "graph    graph";
+  gap: 5vw;
+  padding: 5vw;
+}
+
+#title {
+  grid-area: title;
 }
 
 #formula {
-    grid-area: formula;
+  grid-area: formula;
 
-    box-shadow: 0px 0px 10px 6px rgba(0, 0, 0, 0.2);
-    padding: 5vw;
-    border-radius:3vw;
+  box-shadow: 0px 0px 10px 6px rgba(0, 0, 0, 0.2);
+  padding: 5vw;
+  border-radius: 3vw;
 
-    .eq {
-        font-size: 3.5vw;
-        margin-top: 1vw;
-    }
+  .eq {
+    font-size: 3.5vw;
+    margin-top: 1vw;
+  }
 }
 
-#now_time{
-    grid-area: now_time;
+#now_time {
+  grid-area: now_time;
 
-    box-shadow: 0px 0px 10px 6px rgba(0, 0, 0, 0.2);
-    padding: 5vw;
-    border-radius: 3vw;
+  box-shadow: 0px 0px 10px 6px rgba(0, 0, 0, 0.2);
+  padding: 5vw;
+  border-radius: 3vw;
 }
 
 #now_price {
-    grid-area: now_price;
+  grid-area: now_price;
 
-    box-shadow: 0px 0px 10px 6px rgba(0, 0, 0, 0.2);
-    padding:5vw;
-    border-radius: 3vw;
+  box-shadow: 0px 0px 10px 6px rgba(0, 0, 0, 0.2);
+  padding: 5vw;
+  border-radius: 3vw;
 
-    .price {
-        margin-top: -5vw;
+  .price {
+    margin-top: -5vw;
 
-        #value {
-            font-size: 15vw;
-        }
-
-        #yen {
-            font-size: 5vw;
-        }
+    #value {
+      font-size: 15vw;
     }
+
+    #yen {
+      font-size: 5vw;
+    }
+  }
 }
 
-#graph{
-    grid-area: graph;
+#graph {
+  grid-area: graph;
 
-    box-shadow: 0px 0px 10px 6px rgba(0, 0, 0, 0.2);
-    padding: 5vw;
-    border-radius: 3vw;
+  box-shadow: 0px 0px 10px 6px rgba(0, 0, 0, 0.2);
+  padding: 5vw;
+  border-radius: 3vw;
+}
+
+#canvas {
+  width: 100%;
 }
 
 #reload {
-    font-size: 3vw;
+  font-size: 3vw;
 }
