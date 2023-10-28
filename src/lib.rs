@@ -48,7 +48,7 @@ fn update(msg: Msg, model: &mut Model, _: &mut impl Orders<Msg>) {
 // `view` describes what to display.
 fn view(model: &Model) -> Vec<Node<Msg>> {
     vec![
-        div!(attrs!(At::Id => "title"), p!("処分場"), hr!()),
+        div!(attrs!(At::Id => "title"), p!("大岡山最終処分場。"), hr!()),
         div!(
             attrs!(At::Id => "formula"),
             p!(C!("text"), "価格関数"),
@@ -66,7 +66,7 @@ fn view(model: &Model) -> Vec<Node<Msg>> {
             p!(
                 C!("price"),
                 span!(attrs!(At::Id => "value"), "40"),
-                span!(attrs!(At::Id => "yes"), "円"),
+                span!(attrs!(At::Id => "yen"), "円"),
             )
         ),
         div!(attrs!(At::Id => "graph"), p!(C!("text"), "過去の価格変動"),canvas!(attrs!(At::Id => "canvas",At::Width => 1400,At::Height => 800),))
