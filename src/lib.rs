@@ -27,62 +27,64 @@ fn prices() -> Vec<Price> {
             max: 1.0,
         },
         Price {
-            // 1
-            calculate: |t| 50.0 * (t * (20.0 * PI * t).sin() + 1.0),
-            formula: "\\(P(t) = 50(t \\sin20\\pi t + 1)\\)".to_string(),
-            max: 100.0,
-        },
-        Price {
-            // 2
-            calculate: |t| 250.0 * (t * (20.0 * PI * t).sin() + 1.0),
-            formula: "\\(P(t) = 250(t \\sin20\\pi t + 1)\\)".to_string(),
+            // 1 本とかヘルメットとか
+            calculate: |t| 200.0 * (t * (20.0 * PI * t).sin()) + 300.0,
+            formula: "\\(P(t) = 200(t \\sin20\\pi t) + 300\\)".to_string(),
             max: 500.0,
         },
         Price {
-            // 3
-            calculate: |t| 200.0 * t.sqrt() + 300.0,
-            formula: "\\(P(t) = 200\\sqrt{t} + 300\\)".to_string(),
-            max: 500.0,
-        },
-        Price {
-            // 3'
+            // 2 CPUキーホルダー
             calculate: |t| 200.0 * (-t + 1.0).sqrt() + 300.0,
             formula: "\\(P(t) = 200\\sqrt{-t+1} + 300\\)".to_string(),
             max: 500.0,
         },
         Price {
-            // 4
-            calculate: |t| 2000.0 * (t - 1.0 / 2.0).powf(3.0) + 750.0,
-            formula: "\\(P(t) = 2000(t-\\frac{1}{2})^3 + 750\\)".to_string(),
-            max: 1000.0,
+            // 3 目玉焼きのキーボード
+            calculate: |t| 500.0 * (10.0 * PI * t).sin() + 500.0 * (5.0 * PI * t).cos() + 1000.0 * (PI * t).cos() + 3000.0,
+            formula: "\\(\\begin{eqnarray} P(t) = 500\\sin{(10\\pi t)} \\\\ + 500\\cos{(5\\pi t)} \\\\ + 1000\\cos{(\\pi t)} \\\\ + 3000 \\end{eqnarray}\\)".to_string(),
+            max: 5000.0,
         },
         Price {
-            // 5
-            calculate: |t| 50.0 * (10.0 * PI * t).sin() + 400.0 * t + 800.0,
-            formula: "\\(P(t) = 50\\sin{10\\pi t} + 400 + 800\\)".to_string(),
-            max: 1200.0,
-        },
-        Price {
-            // 6
+            // 4 iMac、燃えたマザボ、謎グラボ
             calculate: |t| 1400.0 * (-t + 3.0).ln(),
             formula: "\\(P(t) = 1400\\ln{(-t + 3)}\\)".to_string(),
             max: 1600.0,
         },
         Price {
-            // 7
-            calculate: |t| 100.0 * (10.0 * PI * t).cos() - 1000.0 * t + 3000.0,
+            // 5 価値が本当にないもの
+            calculate: |t| 50.0 * (t * (20.0 * PI * t).sin() + 1.0),
+            formula: "\\(P(t) = 50(t \\sin20\\pi t + 1)\\)".to_string(),
+            max: 100.0,
+        },
+        Price {            calculate: |t| 250.0 * (t * (20.0 * PI * t).sin() + 1.0),
+            formula: "\\(P(t) = 250(t \\sin20\\pi t + 1)\\)".to_string(),
+            max: 500.0,
+        },
+        Price {            calculate: |t| 200.0 * t.sqrt() + 300.0,
+            formula: "\\(P(t) = 200\\sqrt{t} + 300\\)".to_string(),
+            max: 500.0,
+        },
+        Price {            calculate: |t| 2000.0 * (t - 1.0 / 2.0).powf(3.0) + 750.0,
+            formula: "\\(P(t) = 2000(t-\\frac{1}{2})^3 + 750\\)".to_string(),
+            max: 1000.0,
+        },
+        Price {            calculate: |t| 50.0 * (10.0 * PI * t).sin() + 400.0 * t + 800.0,
+            formula: "\\(P(t) = 50\\sin{10\\pi t} + 400 + 800\\)".to_string(),
+            max: 1200.0,
+        },
+        Price {            calculate: |t| 1400.0 * (-t + 3.0).ln(),
+            formula: "\\(P(t) = 1400\\ln{(-t + 3)}\\)".to_string(),
+            max: 1600.0,
+        },
+        Price {            calculate: |t| 100.0 * (10.0 * PI * t).cos() - 1000.0 * t + 3000.0,
             formula: "\\(P(t) = 100\\cos{(10\\pi t) - 1000t + 3000}\\)".to_string(),
             max: 3200.0,
         },
-        Price {
-            // 8
-            calculate: |t| 500.0 * (10.0 * PI * t).sin() + 500.0 * (5.0 * PI * t).cos() + 4000.0,
+        Price {            calculate: |t| 500.0 * (10.0 * PI * t).sin() + 500.0 * (5.0 * PI * t).cos() + 4000.0,
             formula: "\\(P(t) = 500\\sin{(10\\pi t)} + 500\\cos{(5\\pi t)} + 4000\\)".to_string(),
             max: 5000.0,
         },
-        Price {
-            // 9
-            calculate: |t| {
+        Price {            calculate: |t| {
                 150.0
                     * ((128.0 * PI * t).sin()
                         + (64.0 * PI * t).sin()
@@ -94,7 +96,7 @@ fn prices() -> Vec<Price> {
                     - 1200.0 * t
                     + 6800.0
             },
-            formula: "\\(\\begin{eqnarray}P(t) = 150(\\sum_{k=1}^7 \\sin(2^k\\pi t)) \\\\- 1200t + 6800\\end{eqnarray}\\)"
+            formula: "\\(\\begin{eqnarray} P(t) = 150(\\sum_{k=1}^7 \\sin(2^k\\pi t)) \\\\- 1200t + 6800 \\end{eqnarray}\\)"
                 .to_string(),
             max: 7500.0,
         },
@@ -104,7 +106,6 @@ fn prices() -> Vec<Price> {
             max: 18000.0,
         },
         Price {
-            // 11
             calculate: |t| {
                 let min: f32 = t * 420.0;
                 let sec: f32 = t * 420.0 * 60.0;
@@ -141,7 +142,7 @@ fn view(model: &Model) -> Vec<Node<Msg>> {
 
     let sec: i64 = Local::now().timestamp() - START_UNIX_TIME;
     let t: f32 = (sec as f32) / 60.0 / 420.0;
-    // let t = 1.0;
+    let t = 1.0; // DEBUG
     let price: i32 = (((prices()[id as usize].calculate)(t) / 10.0).round() * 10.0) as i32;
     vec![
         div!(attrs!(At::Id => "title"), p!("大岡山最終処分場。"), hr!()),
