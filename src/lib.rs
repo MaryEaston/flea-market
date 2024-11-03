@@ -52,8 +52,8 @@ fn prices() -> Vec<Price> {
         },
         Price {
             // 5 価値が本当にないもの
-            calculate: |t| 50.0 * (t * (20.0 * PI * t).sin() + 1.0),
-            formula: "\\(P(t) = 50(t \\sin20\\pi t + 1)\\)".to_string(),
+            calculate: |t| 50.0 * (t * (20.0 * PI * t).cos() + 1.0),
+            formula: "\\(P(t) = 50(t \\cos20\\pi t + 1)\\)".to_string(),
             max: 100.0,
         },
         Price {            calculate: |t| 250.0 * (t * (20.0 * PI * t).sin() + 1.0),
