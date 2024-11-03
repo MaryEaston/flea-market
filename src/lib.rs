@@ -94,7 +94,7 @@ fn prices() -> Vec<Price> {
                     - 1200.0 * t
                     + 6800.0
             },
-            formula: "\\(P(t) = 150(\\sum_{k=1}^7 \\sin(2^k\\pi t)) \\\\- 1200t + 6800\\)"
+            formula: "\\(\\begin{eqnarray}P(t) = 150(\\sum_{k=1}^7 \\sin(2^k\\pi t)) \\\\- 1200t + 6800\\end{eqnarray}\\)"
                 .to_string(),
             max: 7500.0,
         },
@@ -142,7 +142,7 @@ fn view(model: &Model) -> Vec<Node<Msg>> {
     let sec: i64 = Local::now().timestamp() - START_UNIX_TIME;
     let t: f32 = (sec as f32) / 60.0 / 420.0;
     // let t = 1.0;
-    let price = (prices()[id as usize].calculate)(t);
+    let price: i32 = (((prices()[id as usize].calculate)(t) / 10.0).round() * 10.0) as i32;
     vec![
         div!(attrs!(At::Id => "title"), p!("大岡山最終処分場。"), hr!()),
         div!(attrs!(At::Id => "menu")),
