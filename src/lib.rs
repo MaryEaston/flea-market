@@ -11,7 +11,7 @@ use rand::prelude::*;
 use chrono::Local;
 use seed::{prelude::*, *};
 
-const START_UNIX_TIME: i64 = 1730635200;
+const START_UNIX_TIME: i64 = 1730682000;
 
 pub struct Price {
     pub max: f32,
@@ -141,8 +141,8 @@ fn view(model: &Model) -> Vec<Node<Msg>> {
     let formula = prices()[id as usize].formula.clone();
 
     let sec: i64 = Local::now().timestamp() - START_UNIX_TIME;
-    let t: f32 = (sec as f32) / 60.0 / 420.0;
-    let t = 1.0; // DEBUG
+    let t: f32 = (sec as f32) / 60.0 / 300.0;
+    let t = 1.0; // # DEBUG
     let price: i32 = (((prices()[id as usize].calculate)(t) / 10.0).round() * 10.0) as i32;
     vec![
         div!(attrs!(At::Id => "title"), p!("大岡山最終処分場。"), hr!()),
