@@ -142,7 +142,6 @@ fn view(model: &Model) -> Vec<Node<Msg>> {
 
     let sec: i64 = Local::now().timestamp() - START_UNIX_TIME;
     let t: f32 = (sec as f32) / 60.0 / 300.0;
-    let t = 1.0; // # DEBUG
     let price: i32 = (((prices()[id as usize].calculate)(t) / 10.0).round() * 10.0) as i32;
     vec![
         div!(attrs!(At::Id => "title"), p!("大岡山最終処分場。"), hr!()),
